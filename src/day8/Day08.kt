@@ -9,16 +9,10 @@ fun main (args: Array<String>) {
     grid.dumpVisible()
 
     // part1
-    val visible = grid.countVisible ()
-    println ("$visible")
+    println (grid.visible)
 
     // part2
-    val scores = mutableListOf<Int> ()
-    grid.visit { x, y, ->
-        scores.add (getScenicScore(x, y))
-    }
-
-    println ("${scores.maxOf { it }}")
+    println (grid.maxScenicScore)
     return
 }
 

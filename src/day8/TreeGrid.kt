@@ -35,9 +35,7 @@ data class TreeGrid (val data: List<List<Int>>) {
     }
 
     fun dump () {
-        data.forEach {
-            println (it)
-        }
+        data.dump ()
         return
     }
 
@@ -62,17 +60,25 @@ data class TreeGrid (val data: List<List<Int>>) {
         }
     }
 
-    fun countVisible (): Int {
-        var total = 0
-        for (x in 0 until cols) {
-            for (y in 0 until rows) {
+    val visible: Int
+        get () {
+            var total = 0
+            visit { x, y ->
                 if (isVisible (x, y)) {
                     total ++
                 }
             }
+            return total
         }
-        return total
-    }
+
+    val maxScenicScore: Int
+        get () {
+            val scores = mutableListOf<Int> ()
+            visit { x, y, ->
+                scores.add (getScenicScore(x, y))
+            }
+            return scores.maxOf { it }
+        }
 
     fun getViews (x: Int, y: Int): List<List<Int>> {
         val xs = row (y)
