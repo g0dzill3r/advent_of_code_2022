@@ -5,6 +5,12 @@ package day8
  */
 
 data class TreeGrid (val data: List<List<Int>>) {
+    init {
+        data.forEach {
+            assert (it.size == data.size)
+        }
+    }
+
     val cols: Int  = data[0].size
     val rows: Int = data.size
     fun height (x: Int, y: Int): Int = data[y][x]
