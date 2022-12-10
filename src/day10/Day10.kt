@@ -37,9 +37,9 @@ fun main (args: Array<String>) {
                 crt.append("\n")
             }
             if (pos in c.x - 1 .. c.x + 1) {
-                crt.append ("█")
+                crt.append ("██")
             } else {
-                crt.append (".")
+                crt.append ("░░")
             }
         }
         cpu.execute (opcodes)
