@@ -26,6 +26,12 @@ class Computer {
         return
     }
 
+    fun trace () {
+        addListener { c, opcode, tick ->
+            println (String.format ("c:%05d x:%05d t:%d o:%s", c.clock, c.x, tick, opcode))
+        }
+    }
+    
     override fun toString () : String {
         return String.format ("c:%05d x:%05d", clock, x)
     }

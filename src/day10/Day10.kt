@@ -1,6 +1,5 @@
 package day10
 
-import day9.repeat
 import readInput
 
 fun main (args: Array<String>) {
@@ -10,14 +9,12 @@ fun main (args: Array<String>) {
 
     // part1
     Computer ().let { cpu ->
-        //    cpu.addListener { c, opcode, tick ->
-        //        println (String.format ("c:%05d x:%05d t:%d o:%s", c.clock, c.x, tick, opcode))
-        //    }
+        cpu.trace ()
 
         var total = 0
         val doSample = { tick: Int -> tick == 20 || (tick > 20 && ((tick - 20) % 40 == 0)) }
         cpu.addListener { c, opcode, tick ->
-            if (doSample (tick)) {
+            if (doSample (c.clock)) {
                 total += c.clock * c.x
             }
         }
@@ -43,7 +40,7 @@ fun main (args: Array<String>) {
             }
         }
         cpu.execute (opcodes)
-        println ("[part2]")
+        println ("\n[part2]")
         println (crt)
     }
 

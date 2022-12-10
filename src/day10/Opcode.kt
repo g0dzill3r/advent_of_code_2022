@@ -11,7 +11,7 @@ sealed class OpCode (val opcode: String, val cycles: Int) {
         }
     }
     class ADDX (val value: Int): OpCode ("addx", 2) {
-        override fun toString (): String = "$opcode $value"
+        override fun toString (): String = String.format ("%s %4d", opcode, value)
         override fun execute (cpu: Computer, tick: Int) {
             if (tick == cycles) {
                 cpu.x += value
