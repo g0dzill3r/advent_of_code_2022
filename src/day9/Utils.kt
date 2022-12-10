@@ -30,8 +30,12 @@ fun block (func: () -> Unit) {
 
 fun main (args: Array<String>) {
 
-    // Int.repeat
+    // This is annoying
+    block {
+        println ("hi")
+    }
 
+    // Int.repeat
     3.repeat {
         println (it)
     }
