@@ -1,8 +1,9 @@
 package day11
 
 
-
-
+/**
+ * Solution to day 11.
+ */
 
 fun main (args: Array<String>) {
     val example = false
