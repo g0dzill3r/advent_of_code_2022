@@ -15,6 +15,7 @@ fun main (args: Array<String>) {
                 it.minus (extra).divide (3.toBigInteger ())
             }
         }
+        monkeys.dump ()
         val result = monkeys.monkeys.map { it.inspections }
             .sortedDescending()
             .subList(0, 2)

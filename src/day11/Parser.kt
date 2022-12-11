@@ -105,13 +105,19 @@ fun getMonkeys (example: Boolean): Monkeys {
     return Monkeys.parse (input)
 }
 
+/**
+ * Test out the parser.
+ */
 fun main (args: Array<String>) {
-    val example = true
-    val monkeys = getMonkeys (example)
-    monkeys.monkeys.forEach {
-        println (it)
+    Boolean.values ().forEach {
+        val monkeys = getMonkeys (it)
+        monkeys.monkeys.forEach {
+            println (it)
+        }
     }
     return
 }
+
+private fun Boolean.Companion.values () = listOf (true, false)
 
 // EOF
