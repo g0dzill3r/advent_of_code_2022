@@ -19,7 +19,7 @@ fun main (args: Array<String>) {
         monkeys.dump ()
         val result = monkeys.monkeys.map { it.inspections }
             .sortedDescending()
-            .subList(0, 2)
+            .take (2)
             .fold (1) {
                 acc, v -> acc * v
             }
@@ -36,7 +36,7 @@ fun main (args: Array<String>) {
         monkeys.dump ()
         val result = monkeys.monkeys.map { it.inspections.toBigInteger() }
             .sortedDescending()
-            .subList(0, 2)
+            .take (2)
             .fold (1.toBigInteger()) {
                     acc, v -> acc * v
             }

@@ -5,7 +5,7 @@ import java.math.BigInteger
 import java.util.regex.Pattern
 
 private val REGEX = """
-^Monkey (\d+):\s+Starting items: ([0-9, ]+)\s+Operation: new = ([\w\d]+)\s([+*])\s([\w\d]+)\s+Test: divisible by (\d+)\s+If true: throw to monkey (\d+)\s+If false: throw to monkey (\d+)${'$'}
+^Monkey (\d+):\s+Starting items: ([0-9, ]+)\s+Operation: new = old\s([+*])\s([\w\d]+)\s+Test: divisible by (\d+)\s+If true: throw to monkey (\d+)\s+If false: throw to monkey (\d+)${'$'}
 """.trimIndent()
 
 data class Monkeys (
@@ -49,7 +49,7 @@ data class Monkeys (
 data class Monkey (
     val index: Int,
     val items: MutableList<BigInteger>,
-    val operation: Triple<String, String, String>,
+    val operation: Pair<String, String>,
     val test: BigInteger,
     val ifTrue: Int,
     val ifFalse: Int
@@ -57,12 +57,11 @@ data class Monkey (
     var inspections: Int = 0
 
     fun evaluate (item: BigInteger): BigInteger {
-        val (lexpr, op, rexpr) = operation
-        val lval = if (lexpr == "old") item else lexpr.toBigInteger ()
+        val (op, rexpr) = operation
         val rval = if (rexpr == "old") item else rexpr.toBigInteger()
         return when (op) {
-            "+" -> lval + rval
-            "*" -> lval * rval
+            "+" -> item + rval
+            "*" -> item * rval
             else -> throw Exception ("Invalid op: $op")
         }
     }
@@ -90,7 +89,7 @@ data class Monkey (
             var i = 1
             val monkey = match.group (i++).toInt ()
             val items = match.group (i++).split (",").map { it.trim ().toBigInteger() }.toMutableList()
-            val op = Triple<String, String, String> (match.group (i++), match.group (i++), match.group (i++))
+            val op = Pair<String, String> (match.group (i++), match.group (i++))
             val test = match.group (i++).toBigInteger ()
             val ifTrue = match.group (i++).toInt ()
             val ifFalse = match.group (i++).toInt ()
