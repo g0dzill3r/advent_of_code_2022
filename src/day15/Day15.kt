@@ -4,12 +4,12 @@ import java.math.BigInteger
 
 fun main() {
     val example = false
+    val (row, max) = if (example) Pair(10, 20) else Pair(2_000_000,4_000_000)
+
     val ms = loadMeasurements(example)
 //    ms.dump ()
 
     // part1
-//    val row = 10
-    val row = 2_000_000
     val beacons = mutableSetOf<Int>()
     val set = mutableSetOf<Int>()
     ms.data.forEach {
@@ -26,8 +26,6 @@ fun main() {
     println ("part1=${set.size - beacons.size}")
 
     // part2
-//    val max = 20
-    val max = 4_000_000
     val possible = mutableListOf<Point> ()
     for (y in 0 .. max) {
         val intervals = Intervals ()
@@ -44,7 +42,7 @@ fun main() {
     }
     println (possible)
     val loc = possible[0]
-    val freq = loc.x.toBigInteger().times(4_000_000.toBigInteger ()).plus (loc.y.toBigInteger ())
+    val freq = loc.x.toBigInteger().times(max.toBigInteger ()).plus (loc.y.toBigInteger ())
     println ("part2=$freq")
     return
 }
