@@ -6,10 +6,10 @@ import kotlin.math.absoluteValue
 data class Dimensions (val min: Point, val max: Point) {
     val cells: Int
         get () {
-        val point = max.add (min.negate ()).add (Point (1, 1, 1))
-        val (x, y, z) = point
-        return x * y * z
-    }
+            val point = max.add (min.negate ()).add (Point (1, 1, 1))
+            val (x, y, z) = point
+            return x * y * z
+        }
     fun contains (point: Point): Boolean {
         val (x, y, z) = point
         return x >= min.x && x <= max.x && y >= min.y && y <= max.y && z >= min.z && z <= max.z

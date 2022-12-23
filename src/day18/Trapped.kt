@@ -18,49 +18,39 @@ fun Grid.findTrapped (): List<Point> {
 }
 
 fun Grid.findNotTrapped (): Map<Point, Boolean> {
-    val notTrapped = mutableMapOf<Point, Boolean> ()
-    val check = mutableListOf<Point> ()
+    val notTrapped = mutableMapOf<Point, Boolean>()
+    val check = mutableListOf<Point>()
 
     // To be completely proper, we have to attempt searches of the entire grid space
     // from all points on the exterior
 
-    for (x in listOf (min.x, max.x)) {
-        for (y in min.y .. max.y) {
-            for (z in min.z .. max.z) {
-                val point = Point (x, y, z)
-                if (get (point)) {
-                    notTrapped[point] = false
-                } else {
-                    notTrapped[point] = true
-                    check.add (point)
-                }
-            }
+    compose (listOf(min.x, max.x), min.y .. max.y, min.z .. max.z) { x, y, z ->
+        val point = Point(x, y, z)
+        if (get(point)) {
+            notTrapped[point] = false
+        } else {
+            notTrapped[point] = true
+            check.add(point)
         }
     }
-    for (y in listOf (min.y, max.y)) {
-        for (x in min.x .. max.x) {
-            for (z in min.z .. max.z) {
-                val point = Point (x, y, z)
-                if (get (point)) {
-                    notTrapped[point] = false
-                } else {
-                    notTrapped[point] = true
-                    check.add (point)
-                }
-            }
+
+    compose (listOf (min.y, max.y), min.x .. max.x, min.z .. max.z) { y, x, z ->
+        val point = Point(x, y, z)
+        if (get(point)) {
+            notTrapped[point] = false
+        } else {
+            notTrapped[point] = true
+            check.add(point)
         }
     }
-    for (z in listOf (min.z, max.z)) {
-        for (x in min.x .. max.x) {
-            for (y in min.y .. max.y) {
-                val point = Point (x, y, z)
-                if (get (point)) {
-                    notTrapped[point] = false
-                } else {
-                    notTrapped[point] = true
-                    check.add (point)
-                }
-            }
+
+    compose (listOf (min.z, max.z), min.x .. max.x, min.y .. max.y) { z, x, y ->
+        val point = Point (x, y, z)
+        if (get (point)) {
+            notTrapped[point] = false
+        } else {
+            notTrapped[point] = true
+            check.add (point)
         }
     }
 

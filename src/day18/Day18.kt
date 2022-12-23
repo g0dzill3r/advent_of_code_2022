@@ -1,7 +1,7 @@
 package day18
 
 fun main (args: Array<String>) {
-    val example = false
+    val example = true
     val grid = loadGrid (example)
 
     // part1
