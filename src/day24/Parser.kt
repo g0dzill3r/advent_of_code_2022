@@ -14,9 +14,7 @@ enum class Direction (val dx: Int, val dy: Int, val encoded: Char) {
 data class Point (val x: Int, val y: Int) {
     fun add (other: Point): Point = Point (x + other.x, y + other.y)
     fun add (dx: Int, dy: Int): Point= Point (x + dx, y + dy)
-    fun clip (w: Int, h: Int): Point = Point (x % w, y % h)
     fun move (dir: Direction): Point = Point (x + dir.dx, y + dir.dy)
-
     fun move (dir: Direction, xwrap: Int, ywrap: Int): Point {
         var x = x + dir.dx
         if (x < 0) {
@@ -37,44 +35,6 @@ data class Point (val x: Int, val y: Int) {
             y = 0
         }
         return Point (x, y)
-    }
-}
-
-sealed class Thing {
-    class Wall () : Thing () {
-        override fun encode(): Char = '#'
-        companion object {
-            fun decode(c: Char): Thing? = if (c == '#') Wall() else null
-        }
-    }
-    data class Blizzard (val dir: Direction) : Thing () {
-        override fun encode(): Char = dir.encoded
-
-        companion object {
-            fun decode(c: Char): Thing? {
-                return when (c) {
-                    '<' -> Blizzard (Direction.LEFT)
-                    '>' -> Blizzard (Direction.RIGHT)
-                    '^' -> Blizzard (Direction.UP)
-                    'v' -> Blizzard (Direction.DOWN)
-                    else -> null
-                }
-            }
-        }
-    }
-    class Nothing () : Thing () {
-        override fun encode(): Char = '.'
-
-        companion object {
-            fun decode(c: Char): Thing? = if (c == '.') Nothing() else null
-        }
-    };
-
-    abstract fun encode (): Char
-    companion object {
-        fun decode (c: Char): Thing {
-            return Wall.decode (c) ?: Nothing.decode (c) ?: Blizzard.decode (c) ?: throw IllegalArgumentException ("Unrecognized encoding: $c")
-        }
     }
 }
 
@@ -176,7 +136,7 @@ class Valley (val width: Int, val height: Int, val start: Int, val end: Int, var
 
 
     fun render (f: StringBuffer.(Point) -> Unit): String {
-        val wall = Thing.Wall().encode()
+        val wall = '#'
 
         val ingress: StringBuffer.(Int, Boolean) -> Unit = { which, isStart ->
             append(wall)
@@ -216,10 +176,9 @@ class Valley (val width: Int, val height: Int, val start: Int, val end: Int, var
                 append ('.')
             } else {
                 val blizzards = getBlizzards (p)
-                val nothing = Thing.Nothing ()
 
                 append (when (blizzards.size) {
-                    0 -> nothing.encode ()
+                    0 -> '.'
                     1 -> blizzards[0].encoded
                     in 2 .. 9 -> "${blizzards.size}"[0]
                     else -> 'B'
@@ -241,12 +200,10 @@ class Valley (val width: Int, val height: Int, val start: Int, val end: Int, var
                 val str = strs[i].substring (1, strs[i].length - 1)
                 for (x in str.indices) {
                     val c = str[x]
-                    val thing = Thing.decode (c)
-                    when (thing) {
-                        is Thing.Blizzard -> blizzards.add(Pair(Point(x, y), thing.dir))
-                        is Thing.Nothing -> Unit
-                        else -> throw IllegalStateException("What's this: $c")
-                    }
+                     if (c != '.') {
+                        val dir = Direction.values().first { it.encoded == c }
+                         blizzards.add (Pair (Point (x, y), dir))
+                     }
                 }
             }
             return Valley (width, height, start, end, blizzards)
